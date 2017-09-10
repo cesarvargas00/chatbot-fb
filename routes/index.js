@@ -4,7 +4,14 @@ const Post = require('../models/post');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	return res.json({whatisthis: 'this is a json response'});
+	if (req.query['hub.mode'] === 'subscribe' &&
+      req.query['hub.verify_token'] === <VERIFY_TOKEN>) {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);          
+  }
 });
 
 module.exports = router;
