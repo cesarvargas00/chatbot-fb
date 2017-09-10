@@ -5,7 +5,7 @@ const Post = require('../models/post');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === <VERIFY_TOKEN>) {
+      req.query['hub.verify_token'] === 'goosfraba') {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
