@@ -1,0 +1,7 @@
+div.posts
+	each post in posts
+		div.post
+			- var data = post.date.toLocaleString();	
+			h2(class='titulo-post') #{post.title}
+			h4(class='data-post') #{data}
+			p !{post.content}

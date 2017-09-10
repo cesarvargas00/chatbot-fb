@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  if user
+    p Bem vindo, #{user.name}!
+  else  
+    p Click #[a(href='/login') here] to login
+    
+  h1(class='title') cesarvargas.org
+  h4(class='subtitle') your source of yearly bullshit
+  
+  include partials/posts.pug

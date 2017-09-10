@@ -1,0 +1,33 @@
+extends layout
+
+//- includes froala editor dependencies
+block head
+  <!-- Include external CSS. -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+ 
+  <!-- Include Editor style. -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.6.4/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.6.4/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+
+block content
+  p Create a new post page
+  form(method='post', action='/posts/create')
+    h2 Title
+    input(type='text', name='title')
+    h2 Content
+    textarea(name='content', cols='86', rows='20')
+    br
+    input(type='submit')
+
+block body-close
+   <!-- Include external JS libs. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+ 
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.6.4/js/froala_editor.pkgd.min.js"></script>
+ 
+    <!-- Initialize the editor. -->
+    <script> $(function() { $('textarea').froalaEditor() }); </script>

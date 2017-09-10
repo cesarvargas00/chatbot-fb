@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    block head
+  body
+    if user
+      div.menu
+        ul
+          li #[a(href='/') home]
+          li #[a(href='/posts/create') new post]
+          li #[a(href='/posts/list') posts list]
+          li #[a(href='/logout') logout]
+    block content
+    block body-close

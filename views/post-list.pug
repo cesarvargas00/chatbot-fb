@@ -1,0 +1,6 @@
+extends layout
+block content
+	div.posts
+		each post in posts
+			div.post
+				h2 #{post.title || 'Sem título'} 
