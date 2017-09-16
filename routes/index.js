@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var request = require('request');
 
 // Validation
 router.get('/', function(req, res, next) {
@@ -42,30 +43,36 @@ router.post('/', function(req, res, next) {
 });
 
 function receivedMessage(event) {
-  // Putting a stub for now, we'll expand it in the following steps
-  var Slack = require('slack-node');
-  var slack = new Slack();
-  slack.setWebhook('https://hooks.slack.com/services/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');
-
+  
   //get full name of sender
   let sender_id = event.sender.id;
   let page_access_token = 'EAAbYarPCJHsBAOmvH8dWjTFPOZB5qfgxvyKMF7ZBhtA3QeOb48hB3hNMwS9e5yaEs2SOI0NZAyd0NzEkmGvZC5q6rrPgBZAXvvP6AZCIjmDxZCqIfTFGCiKCs44JCEAEGVhjHlO5399hDHrcCOZCAGFSF89FK8Y2u04uy5dymVnBQgZDZD';
 
-  var request = require('request');
-  request(`https://graph.facebook.com/v2.6/${sender_id}?fields=first_name,last_name,profile_pic&access_token=${page_access_token}`, function (error, response, body) {
-    let parsed_body = JSON.parse(body);
-    // slack emoji 
-    slack.webhook({
+  if (event.message.is_echo){
+    sendToSlack('Criar.me', 'https://scontent.fcgh2-1.fna.fbcdn.net/v/t1.0-1/p64x64/14908238_1330418523675276_394637248400955542_n.jpg?oh=9dac39d7b958fa6f13868301398c13dd&oe=5A46E4C1', event.message.text);
+  } else {
+    request(`https://graph.facebook.com/v2.6/${sender_id}?fields=first_name,last_name,profile_pic&access_token=${page_access_token}`, function (error, response, body) {
+      let parsed_body = JSON.parse(body);
+      sendToSlack(`${parsed_body.first_name} ${parsed_body.last_name}`, parsed_body.profile_pic, event.message.text);
+    });
+  }
+  
+
+}
+
+function sendToSlack(username, icon, text) {
+  var Slack = require('slack-node');
+  var slack = new Slack();
+  slack.setWebhook('https://hooks.slack.com/services/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');
+  slack.webhook({
       channel: '#suporte-site-criarme',
-      username: `${parsed_body.first_name} ${parsed_body.last_name}`,
-      icon_emoji: `${parsed_body.profile_pic}`,
-      text: event.message.text
+      username: username,
+      icon_emoji: icon,
+      text: text
     }, function(err, response) {
       if (err) console.log('error sending to slack:', err);
       else console.log('sent to slack!');
     });
-});
-
 }
 
 module.exports = router;
