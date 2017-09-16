@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/chatbot-fb');
 
-const index = require('./routes/index');
+const index = require('./routes');
 
 const app = express();
 
