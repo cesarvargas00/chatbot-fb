@@ -6,14 +6,14 @@ router.get('/', function(req, res, next) {
   console.log(req.query);
   console.log(req.params);
   console.log(req.param);
-	if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === 'goosfraba') {
+  if (req.query['hub.mode'] === 'subscribe' &&
+    req.query['hub.verify_token'] === 'goosfraba') {
     console.log("Validating webhook");
-    res.status(200).send(req.query['hub.challenge']);
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);          
-  }
+  res.status(200).send(req.query['hub.challenge']);
+} else {
+  console.error("Failed validation. Make sure the validation tokens match.");
+  res.sendStatus(403);          
+}
 });
 
 //requests
@@ -47,16 +47,28 @@ function receivedMessage(event) {
   var slack = new Slack();
   slack.setWebhook('https://hooks.slack.com/services/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');
 
-  // slack emoji 
-  slack.webhook({
-    channel: '#suporte-site-criarme',
-    username: 'criarmefb',
-    icon_emoji: ':mega:',
-    text: event.message
-  }, function(err, response) {
-    console.log(response);
-  });
-  console.log('Message data: ', event.message);
+  //get full name of sender
+  let sender_id = event.sender.id;
+  let page_access_token = 'EAAbYarPCJHsBAOmvH8dWjTFPOZB5qfgxvyKMF7ZBhtA3QeOb48hB3hNMwS9e5yaEs2SOI0NZAyd0NzEkmGvZC5q6rrPgBZAXvvP6AZCIjmDxZCqIfTFGCiKCs44JCEAEGVhjHlO5399hDHrcCOZCAGFSF89FK8Y2u04uy5dymVnBQgZDZD';
+
+  var request = require('request');
+  request(`https://graph.facebook.com/v2.6/${sender_id}?fields=first_name,last_name,profile_pic&access_token=${page_access_token}`, function (error, response, body) {
+
+    // slack emoji 
+    slack.webhook({
+      channel: '#suporte-site-criarme',
+      username: `${body.first_name} ${body.last_name}`,
+      icon_emoji: `${body.profile_pic}`,
+      text: event.message.text
+    }, function(err, response) {
+      console.log(response);
+    });
+
+  console.log('error:', error); // Print the error if one occurred
+  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  console.log('body:', body); // Print the HTML for the Google homepage.
+});
+
 }
 
 module.exports = router;
