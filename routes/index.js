@@ -3,6 +3,9 @@ var router = express.Router();
 
 // Validation
 router.get('/', function(req, res, next) {
+  console.log(req.query);
+  console.log(req.params);
+  console.log(req.param);
 	if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === 'goosfraba') {
     console.log("Validating webhook");
