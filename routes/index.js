@@ -1,23 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/post');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-	if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === 'goosfraba') {
-    console.log("Validating webhook");
-    res.status(200).send(req.query['hub.challenge']);
-  } else {
-    console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);          
-  }
-});
+// // Validation
+// router.get('/', function(req, res, next) {
+// 	if (req.query['hub.mode'] === 'subscribe' &&
+//       req.query['hub.verify_token'] === 'goosfraba') {
+//     console.log("Validating webhook");
+//     res.status(200).send(req.query['hub.challenge']);
+//   } else {
+//     console.error("Failed validation. Make sure the validation tokens match.");
+//     res.sendStatus(403);          
+//   }
+// });
 
-/* GET home page. */
+//requests
 router.post('/', function(req, res, next) {
   var data = req.body;
-
+  console.log('anything!');
   // Make sure this is a page subscription
   if (data.object === 'page') {
 
@@ -35,14 +34,8 @@ router.post('/', function(req, res, next) {
         }
       });
     });
-
-    // Assume all went well.
-    //
-    // You must send back a 200, within 20 seconds, to let us know
-    // you've successfully received the callback. Otherwise, the request
-    // will time out and we will keep trying to resend.
-    res.sendStatus(200);
   }
+  res.sendStatus(200);
 });
 
 function receivedMessage(event) {
