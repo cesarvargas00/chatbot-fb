@@ -57,8 +57,8 @@ function receivedMessage(event) {
     // slack emoji 
     slack.webhook({
       channel: '#suporte-site-criarme',
-      username: `${body.first_name} ${body.last_name}`,
-      icon_emoji: `${body.profile_pic}`,
+      username: body.first_name + body.last_name,
+      icon_emoji: body.profile_pic,
       text: event.message.text
     }, function(err, response) {
       console.log(response);
