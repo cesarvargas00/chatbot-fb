@@ -8,7 +8,7 @@
     "cookie-parser": "^1.4.3",
     "debug": "^3.0.1",
     "express": "^4.15.4",
-    "mongoose": "^4.11.10",
+    "mongoose": "^5.10.4",
     "morgan": "^1.8.2",
     "pug": "^2.0.0-rc.4",
     "request": "^2.81.0",
